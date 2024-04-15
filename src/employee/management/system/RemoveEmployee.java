@@ -23,9 +23,10 @@ public class RemoveEmployee extends JFrame implements ActionListener {
         add(cEmpId);
         
         try {
-            Conn c = new Conn();
+            
+             Conn c =Conn.getInstance();
             String query = "select * from employee";
-            ResultSet rs = c.s.executeQuery(query);
+            ResultSet rs = c.getStatement().executeQuery(query);
             while(rs.next()) {
                 cEmpId.add(rs.getString("empId"));
             }
@@ -58,9 +59,10 @@ public class RemoveEmployee extends JFrame implements ActionListener {
         add(lblemail);
         
         try {
-            Conn c = new Conn();
+          Conn c =Conn.getInstance();
+
             String query = "select * from employee where empId = '"+cEmpId.getSelectedItem()+"'";
-            ResultSet rs = c.s.executeQuery(query);
+            ResultSet rs = c.getStatement().executeQuery(query);
             while(rs.next()) {
                 lblname.setText(rs.getString("name"));
                 lblphone.setText(rs.getString("phone"));
@@ -73,9 +75,9 @@ public class RemoveEmployee extends JFrame implements ActionListener {
         cEmpId.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent ie) {
                 try {
-                    Conn c = new Conn();
+                    Conn c = Conn.getInstance();
                     String query = "select * from employee where empId = '"+cEmpId.getSelectedItem()+"'";
-                    ResultSet rs = c.s.executeQuery(query);
+                    ResultSet rs = c.getStatement().executeQuery(query);
                     while(rs.next()) {
                         lblname.setText(rs.getString("name"));
                         lblphone.setText(rs.getString("phone"));
@@ -116,9 +118,10 @@ public class RemoveEmployee extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == delete) {
             try {
-                Conn c = new Conn();
+                 Conn c = Conn.getInstance();
+                   
                 String query = "delete from employee where empId = '"+cEmpId.getSelectedItem()+"'";
-                c.s.executeUpdate(query);
+                c.getStatement().executeUpdate(query);
                 JOptionPane.showMessageDialog(null, "Employee Information Deleted Sucessfully");
                 setVisible(false);
                 new Home();

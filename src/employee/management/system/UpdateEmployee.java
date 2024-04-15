@@ -123,9 +123,12 @@ public class UpdateEmployee extends JFrame implements ActionListener{
         add(lblempId);
         
         try {
-            Conn c = new Conn();
+             Conn c = Conn.getInstance();
+                   
+   
             String query = "select * from employee where empId = '"+empId+"'";
-            ResultSet rs = c.s.executeQuery(query);
+            ResultSet rs = c.getStatement().executeQuery(query);
+
             while(rs.next()) {
                 lblname.setText(rs.getString("name"));
                 tffname.setText(rs.getString("fname"));
@@ -174,9 +177,14 @@ public class UpdateEmployee extends JFrame implements ActionListener{
             String designation = tfdesignation.getText();
             
             try {
-                Conn conn = new Conn();
+                 Conn c = Conn.getInstance();
+                   
+   
+
+            
                 String query = "update employee set fname = '"+fname+"', salary = '"+salary+"', address = '"+address+"', phone = '"+phone+"', email =  '"+email+"', education = '"+education+"', designation = '"+designation+"' where empId = '"+empId+"'";
-                conn.s.executeUpdate(query);
+               c.getStatement().executeUpdate(query);
+
                 JOptionPane.showMessageDialog(null, "Details updated successfully");
                 setVisible(false);
                 new Home();

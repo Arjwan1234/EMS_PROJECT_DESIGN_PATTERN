@@ -59,10 +59,15 @@ System.out.println("URL: " + i1); // Print the URL for debugging
             String username = tfusername.getText();
             String password = tfpassword.getText();
             
-            Conn c = new Conn();
+                
+
+            
+            
+            
+            Conn c =Conn.getInstance();
             String query = "select * from login where username = '"+username+"' and password = '"+password+"'";
             
-            ResultSet rs = c.s.executeQuery(query);
+            ResultSet rs = c.getStatement().executeQuery(query);
             if (rs.next()) {
                 setVisible(false);
                 new Home();

@@ -26,8 +26,10 @@ public class ViewEmployee extends JFrame implements ActionListener{
         add(cemployeeId);
         
         try {
-            Conn c = new Conn();
-            ResultSet rs = c.s.executeQuery("select * from employee");
+         Conn c = Conn.getInstance();
+                   
+   
+            ResultSet rs = c.getStatement().executeQuery("select * from employee");
             while(rs.next()) {
                 cemployeeId.add(rs.getString("empId"));
             }
@@ -38,8 +40,9 @@ public class ViewEmployee extends JFrame implements ActionListener{
         table = new JTable();
         
         try {
-            Conn c = new Conn();
-            ResultSet rs = c.s.executeQuery("select * from employee");
+             Conn c = Conn.getInstance();
+      
+            ResultSet rs = c.getStatement().executeQuery("select * from employee");
             table.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,8 +81,10 @@ public class ViewEmployee extends JFrame implements ActionListener{
         if (ae.getSource() == search) {
             String query = "select * from employee where empId = '"+cemployeeId.getSelectedItem()+"'";
             try {
-                Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery(query);
+                Conn c = Conn.getInstance();
+      
+            
+                ResultSet rs = c.getStatement().executeQuery(query);
                 table.setModel(DbUtils.resultSetToTableModel(rs));
             } catch (Exception e) {
                 e.printStackTrace();

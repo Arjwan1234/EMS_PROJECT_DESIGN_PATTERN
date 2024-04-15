@@ -162,9 +162,9 @@ public class AddEmployee extends JFrame implements ActionListener{
             String empId = lblempId.getText();
             
             try {
-                Conn conn = new Conn();
+                    Conn conn = Conn.getInstance();
                 String query = "insert into employee values('"+name+"', '"+fname+"', '"+dob+"', '"+salary+"', '"+address+"', '"+phone+"', '"+email+"', '"+education+"', '"+designation+"', '"+aadhar+"', '"+empId+"')";
-                conn.s.executeUpdate(query);
+    conn.getStatement().executeUpdate(query);
                 JOptionPane.showMessageDialog(null, "Details added successfully");
                 setVisible(false);
                 new Home();

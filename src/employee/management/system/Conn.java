@@ -4,10 +4,12 @@ import java.sql.*;
 
 public class Conn {
     
-    Connection c;
-    Statement s;
+    private static Conn instance;
+    private Connection c;
+    private Statement s;
 
-    public Conn () {
+    // Private constructor to prevent instantiation from outside
+    private Conn() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql:///employeemanagementsystem", "root", "");
@@ -15,5 +17,18 @@ public class Conn {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Static method to get the singleton instance
+    public static Conn getInstance() {
+        if (instance == null) {
+            instance = new Conn();
+        }
+        return instance;
+    }
+
+    // Method to get the statement object
+    public Statement getStatement() {
+        return s;
     }
 }
