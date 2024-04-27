@@ -190,13 +190,9 @@ public void actionPerformed(ActionEvent ae) {
         String aadhar = tfaadhar.getText();
         String empId = lblempId.getText();
 
-        // Create Employee instance using EmployeeFactory
-        EmployeeFactory employeeFactory = new EmployeeFactory();
-        Employee employee = employeeFactory.createEmployee(
-            type,
-            name, fatherName, dob, salary, address, phone,
-            email, education, designation, aadhar, empId
-        );
+
+Staff staff = new Staff(name, fatherName, dob, salary, address, phone, email, education, designation, aadhar, empId);
+Employee employee = new StaffAdapter(staff);
 
         // Database connection
         try {

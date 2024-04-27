@@ -34,8 +34,12 @@ public class Login extends JFrame implements ActionListener{
         login.setBounds(150, 140, 150, 30);
         login.setBackground(Color.BLACK);
         login.setForeground(Color.WHITE);
-        login.addActionListener(this);
-        add(login);
+        // Create an instance of LoggingLoginDecorator, passing the current Login instance as the delegate
+LoggingLoginDecorator loggingLoginDecorator = new LoggingLoginDecorator(this);
+
+// Set the LoggingLoginDecorator as the action listener for the login button
+login.addActionListener(loggingLoginDecorator);
+add(login);
         ImageIcon i1 = new ImageIcon("icons/second.jpg");
 
 //          ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/second.jpg"));
@@ -81,6 +85,9 @@ System.out.println("URL: " + i1); // Print the URL for debugging
     }
     
     public static void main(String[] args) {
-        new Login();
+    Login login = new Login();
+        LoggingLoginDecorator loggingLoginDecorator = new LoggingLoginDecorator(login);
+        
+
     }
 }

@@ -6,84 +6,91 @@ import java.sql.*;
 import net.proteanit.sql.DbUtils;
 import java.awt.event.*;
 
-public class ViewEmployee extends JFrame implements ActionListener{
+public class ViewEmployee extends JFrame implements ActionListener {
 
     JTable table;
     Choice cemployeeId;
     JButton search, print, update, back;
-    
+
     ViewEmployee() {
-        
+
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
-        
+
         JLabel searchlbl = new JLabel("Search by Employee Id");
         searchlbl.setBounds(20, 20, 150, 20);
         add(searchlbl);
-        
+
         cemployeeId = new Choice();
         cemployeeId.setBounds(180, 20, 150, 20);
         add(cemployeeId);
-        
+
         try {
-         Conn c = Conn.getInstance();
-                   
-   
+            Conn c = Conn.getInstance();
+
             ResultSet rs = c.getStatement().executeQuery("select * from employee");
-            while(rs.next()) {
+            while (rs.next()) {
                 cemployeeId.add(rs.getString("empId"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         table = new JTable();
-        
+
         try {
-             Conn c = Conn.getInstance();
-      
+            Conn c = Conn.getInstance();
+
             ResultSet rs = c.getStatement().executeQuery("select * from employee");
             table.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         JScrollPane jsp = new JScrollPane(table);
         jsp.setBounds(0, 100, 900, 600);
         add(jsp);
-        
+
         search = new JButton("Search");
         search.setBounds(20, 70, 80, 20);
         search.addActionListener(this);
+        LoggingLoginDecorator loggingLoginDecorator = new LoggingLoginDecorator(this);
+
+        search.addActionListener(loggingLoginDecorator);
         add(search);
-        
+
         print = new JButton("Print");
         print.setBounds(120, 70, 80, 20);
         print.addActionListener(this);
+        print.addActionListener(loggingLoginDecorator);
+
         add(print);
-        
+
         update = new JButton("Update");
         update.setBounds(220, 70, 80, 20);
         update.addActionListener(this);
+        update.addActionListener(loggingLoginDecorator);
+
         add(update);
-        
+
         back = new JButton("Back");
         back.setBounds(320, 70, 80, 20);
         back.addActionListener(this);
+        back.addActionListener(loggingLoginDecorator);
+
         add(back);
-        
+
         setSize(900, 700);
         setLocation(300, 100);
         setVisible(true);
     }
-    
+
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == search) {
-            String query = "select * from employee where empId = '"+cemployeeId.getSelectedItem()+"'";
+            String query = "select * from employee where empId = '" + cemployeeId.getSelectedItem() + "'";
             try {
                 Conn c = Conn.getInstance();
-      
-            
+
                 ResultSet rs = c.getStatement().executeQuery(query);
                 table.setModel(DbUtils.resultSetToTableModel(rs));
             } catch (Exception e) {

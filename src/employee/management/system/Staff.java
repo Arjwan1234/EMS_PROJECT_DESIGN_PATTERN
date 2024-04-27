@@ -29,7 +29,6 @@ public class Staff implements Employee {
         this.aadhar = aadhar;
         this.empId = empId;
     }
-
     // Implement Employee interface methods
     public String getName() { return name; }
     public String getFatherName() { return fatherName; }
@@ -43,5 +42,3 @@ public class Staff implements Employee {
     public String getAadhar() { return aadhar; }
     public String getEmpId() { return empId; }
 }
-
-// Similarly, you can create classes for Staff, Intern, and other types of employees.

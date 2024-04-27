@@ -29,6 +29,9 @@ public class Splash extends JFrame implements ActionListener {
         clickhere.setBackground(Color.BLACK);
         clickhere.setForeground(Color.WHITE);
         clickhere.addActionListener(this);
+         LoggingLoginDecorator loggingLoginDecorator = new LoggingLoginDecorator(this);
+
+        clickhere.addActionListener(loggingLoginDecorator);
         image.add(clickhere);
         
         

@@ -81,6 +81,9 @@ public class UpdateEmployee extends JFrame implements ActionListener {
         btnUpdate.addActionListener(this);
         btnUpdate.setBackground(Color.BLACK);
         btnUpdate.setForeground(Color.WHITE);
+         LoggingLoginDecorator loggingLoginDecorator = new LoggingLoginDecorator(this);
+
+        btnUpdate.addActionListener(loggingLoginDecorator);
         add(btnUpdate);
 
         btnBack = new JButton("Back");
@@ -88,6 +91,8 @@ public class UpdateEmployee extends JFrame implements ActionListener {
         btnBack.addActionListener(this);
         btnBack.setBackground(Color.BLACK);
         btnBack.setForeground(Color.WHITE);
+                btnBack.addActionListener(loggingLoginDecorator);
+
         add(btnBack);
     }
 
