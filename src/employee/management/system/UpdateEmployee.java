@@ -6,186 +6,138 @@ import java.awt.event.*;
 import java.sql.*;
 
 public class UpdateEmployee extends JFrame implements ActionListener {
-
-    private JComboBox<String> cbType;
-
+    private Command updateDetailsCommand;
+    
     private JTextField tfEducation, tfFatherName, tfAddress, tfPhone, tfEmail, tfSalary, tfDesignation;
-    private JLabel lblEmpId, lblName, lblDob, lblAadhar;
-    private JButton btnUpdate, btnBack;
+    private JLabel lblEmpId, lblAadhar;
+    private JButton updateButton, backButton;
     private String empId;
 
     public UpdateEmployee(String empId) {
         this.empId = empId;
+        this.updateDetailsCommand = new UpdateDetailsCommand(this);
+
+        setTitle("Update Employee Details");
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
 
-        setUpUI();
-        populateEmployeeDetails(empId);
-
-        setSize(900, 700);
-        setLocation(300, 50);
-        setVisible(true);
-    }
-
-    private void setUpUI() {
         JLabel heading = new JLabel("Update Employee Details");
-        heading.setBounds(320, 30, 500, 50);
         heading.setFont(new Font("SAN_SERIF", Font.BOLD, 25));
+        heading.setBounds(320, 30, 500, 50);
         add(heading);
-        // Employee type selection (Staff, Intern, etc.)
-        JLabel labelType = new JLabel("Employee Type");
-        labelType.setBounds(50, 100, 150, 30);
-        labelType.setFont(new Font("serif", Font.PLAIN, 20));
-        add(labelType);
 
-        String[] types = {"Staff", "Intern", "Other"}; // Add other types as necessary
-        cbType = new JComboBox<>(types);
-        cbType.setBounds(200, 100, 150, 30);
-        add(cbType);
+        JLabel lblName = new JLabel("Name:");
+        lblName.setBounds(50, 150, 150, 30);
+        lblName.setFont(new Font("serif", Font.PLAIN, 20));
+        add(lblName);
 
-        createLabel("Name", 50, 150);
-        lblName = createLabel("", 200, 150);
+        JLabel lblFatherName = new JLabel("Father's Name:");
+        lblFatherName.setBounds(50, 200, 150, 30);
+        lblFatherName.setFont(new Font("serif", Font.PLAIN, 20));
+        add(lblFatherName);
 
-        createLabel("Father's Name", 400, 150);
-        tfFatherName = createTextField(600, 150);
+        JLabel lblDob = new JLabel("Date of Birth:");
+        lblDob.setBounds(50, 250, 150, 30);
+        lblDob.setFont(new Font("serif", Font.PLAIN, 20));
+        add(lblDob);
 
-        createLabel("Date of Birth", 50, 200);
-        lblDob = createLabel("", 200, 200);
+        JLabel lblSalary = new JLabel("Salary:");
+        lblSalary.setBounds(50, 300, 150, 30);
+        lblSalary.setFont(new Font("serif", Font.PLAIN, 20));
+        add(lblSalary);
 
-        createLabel("Salary", 400, 200);
-        tfSalary = createTextField(600, 200);
+        tfFatherName = new JTextField();
+        tfFatherName.setBounds(200, 150, 150, 30);
+        add(tfFatherName);
 
-        createLabel("Address", 50, 250);
-        tfAddress = createTextField(200, 250);
+        tfAddress = new JTextField();
+        tfAddress.setBounds(200, 200, 150, 30);
+        add(tfAddress);
 
-        createLabel("Phone", 400, 250);
-        tfPhone = createTextField(600, 250);
+        tfPhone = new JTextField();
+        tfPhone.setBounds(200, 250, 150, 30);
+        add(tfPhone);
 
-        createLabel("Email", 50, 300);
-        tfEmail = createTextField(200, 300);
+        tfEmail = new JTextField();
+        tfEmail.setBounds(200, 300, 150, 30);
+        add(tfEmail);
 
-        createLabel("Highest Education", 400, 300);
-        tfEducation = createTextField(600, 300);
+        tfEducation = new JTextField();
+        tfEducation.setBounds(200, 350, 150, 30);
+        add(tfEducation);
 
-        createLabel("Designation", 50, 350);
-        tfDesignation = createTextField(200, 350);
+        tfDesignation = new JTextField();
+        tfDesignation.setBounds(200, 400, 150, 30);
+        add(tfDesignation);
 
-        createLabel("Aadhar Number", 400, 350);
-        lblAadhar = createLabel("", 600, 350);
+        tfSalary = new JTextField();
+        tfSalary.setBounds(200, 450, 150, 30);
+        add(tfSalary);
 
-        createLabel("Employee ID", 50, 400);
-        lblEmpId = createLabel("", 200, 400);
+        lblEmpId = new JLabel();
+        lblEmpId.setBounds(400, 150, 150, 30);
+        add(lblEmpId);
 
-        btnUpdate = new JButton("Update Details");
-        btnUpdate.setBounds(250, 550, 150, 40);
-        btnUpdate.addActionListener(this);
-        btnUpdate.setBackground(Color.BLACK);
-        btnUpdate.setForeground(Color.WHITE);
-         LoggingLoginDecorator loggingLoginDecorator = new LoggingLoginDecorator(this);
+        lblAadhar = new JLabel();
+        lblAadhar.setBounds(400, 200, 150, 30);
+        add(lblAadhar);
 
-        btnUpdate.addActionListener(loggingLoginDecorator);
-        add(btnUpdate);
+        updateButton = new JButton("Update");
+        updateButton.setBounds(200, 500, 100, 30);
+        updateButton.addActionListener(this);
+        add(updateButton);
 
-        btnBack = new JButton("Back");
-        btnBack.setBounds(450, 550, 150, 40);
-        btnBack.addActionListener(this);
-        btnBack.setBackground(Color.BLACK);
-        btnBack.setForeground(Color.WHITE);
-                btnBack.addActionListener(loggingLoginDecorator);
+        backButton = new JButton("Back");
+        backButton.setBounds(350, 500, 100, 30);
+        backButton.addActionListener(this);
+        add(backButton);
 
-        add(btnBack);
-    }
-
-    private JLabel createLabel(String text, int x, int y) {
-        JLabel label = new JLabel(text);
-        label.setBounds(x, y, 150, 30);
-        label.setFont(new Font("serif", Font.PLAIN, 20));
-        add(label);
-        return label;
-    }
-
-    private JTextField createTextField(int x, int y) {
-        JTextField textField = new JTextField();
-        textField.setBounds(x, y, 150, 30);
-        add(textField);
-        return textField;
-    }
-
-    private void populateEmployeeDetails(String empId) {
         try {
             Conn conn = Conn.getInstance();
-            String query = "SELECT * FROM employee WHERE empId = ?";
-            PreparedStatement pstmt = conn.getConnection().prepareStatement(query);
-            pstmt.setString(1, empId);
-            ResultSet rs = pstmt.executeQuery();
+            String query = "SELECT * FROM employee WHERE empId = '" + empId + "'";
+            ResultSet rs = conn.getStatement().executeQuery(query);
 
-            if (rs.next()) {
-                lblName.setText(rs.getString("name"));
+            while (rs.next()) {
+                lblEmpId.setText(rs.getString("empId"));
                 tfFatherName.setText(rs.getString("fname"));
-                lblDob.setText(rs.getString("dob"));
                 tfAddress.setText(rs.getString("address"));
-                tfSalary.setText(rs.getString("salary"));
                 tfPhone.setText(rs.getString("phone"));
                 tfEmail.setText(rs.getString("email"));
                 tfEducation.setText(rs.getString("education"));
-                lblAadhar.setText(rs.getString("aadhar"));
-                lblEmpId.setText(rs.getString("empId"));
                 tfDesignation.setText(rs.getString("designation"));
+                lblAadhar.setText(rs.getString("aadhar"));
+                tfSalary.setText(rs.getString("salary"));
             }
-            rs.close();
-            pstmt.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error retrieving employee details: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        setSize(800, 600);
+        setLocation(300, 150);
+        setVisible(true);
+    }
+
+    public void updateDetails() {
+        try {
+            Conn conn = Conn.getInstance();
+            String query = "UPDATE employee SET fname = '" + tfFatherName.getText() + "', salary = '" + tfSalary.getText() + "', address = '" + tfAddress.getText() + "', phone = '" + tfPhone.getText() + "', email = '" + tfEmail.getText() + "', education = '" + tfEducation.getText() + "', designation = '" + tfDesignation.getText() + "' WHERE empId = '" + empId + "'";
+            
+            conn.getStatement().executeUpdate(query);
+            JOptionPane.showMessageDialog(this, "Details updated successfully");
+            setVisible(false);
+            new Home();  // Adjust as needed for your application
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == btnUpdate) {
-            updateEmployeeDetails();
-        } else if (ae.getSource() == btnBack) {
-            setVisible(false);
-            new Home();
+        if (ae.getSource() == updateButton) {
+            updateDetailsCommand.execute();
+        } else if (ae.getSource() == backButton) {
+            dispose();
         }
-    }
-
-    private void updateEmployeeDetails() {
-        String fatherName = tfFatherName.getText();
-        String salary = tfSalary.getText();
-        String address = tfAddress.getText();
-        String phone = tfPhone.getText();
-        String email = tfEmail.getText();
-        String education = tfEducation.getText();
-        String designation = tfDesignation.getText();
-        String employeeType = cbType.getSelectedItem().toString();
-
-        Conn conn = Conn.getInstance();
-        try {
-            Connection connection = conn.getConnection();
-            String query = "UPDATE employee SET fname = ?, salary = ?, address = ?, phone = ?, email = ?, education = ?, designation = ?,type = ? WHERE empId = ?";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-
-            pstmt.setString(1, fatherName);
-            pstmt.setString(2, salary);
-            pstmt.setString(3, address);
-            pstmt.setString(4, phone);
-            pstmt.setString(5, email);
-            pstmt.setString(6, education);
-            pstmt.setString(7, designation);
-            pstmt.setString(8, employeeType);
-            pstmt.setString(9, empId);
-
-            pstmt.executeUpdate();
-
-            JOptionPane.showMessageDialog(null, "Details updated successfully");
-            setVisible(false);
-            new Home();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error updating employee details: " + e.getMessage());
-            e.printStackTrace();
-        }
-
     }
 
     public static void main(String[] args) {

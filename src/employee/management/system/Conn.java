@@ -31,9 +31,4 @@ public class Conn {
     public Statement getStatement() {
         return s;
     }
-
-   public Connection getConnection() {
-    return c;
-}
-
 }
